@@ -1,8 +1,8 @@
 const express = require("express");
 require("dotenv").config();
 
-const expressApp = require("#utils/express-app.js");
-const errorHandler = require("#utils/error-handler.js");
+const expressApp = require("./utils/express-app");
+const errorHandler = require("./utils/error-handler");
 
 let PORT = process.env.PORT || 3400;
 

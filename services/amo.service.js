@@ -1,4 +1,4 @@
-const amoInstance = require("#api/amo.instance.js");
+const amoInstance = require("../api/amo.instance.js");
 
 const getUser = async (userId) => {
   const { data } = await amoInstance.get(`/users/${userId}`);

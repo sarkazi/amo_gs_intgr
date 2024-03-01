@@ -1,6 +1,8 @@
-const amoService = require("#services/amo.service.js");
-const googleSheetsService = require("#services/google-sheets.service.js");
-const { getGoogleAccessToken } = require("#services/google-sheets.service.js");
+const amoService = require("../../services/amo.service");
+const googleSheetsService = require("../../services/google-sheets.service.js");
+const {
+  getGoogleAccessToken,
+} = require("../../services/google-sheets.service.js");
 const moment = require("moment");
 
 const onDefineRange = (sheetData) => {

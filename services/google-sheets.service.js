@@ -1,4 +1,4 @@
-const googleInstance = require("#api/google-sheet.instance.js");
+const googleInstance = require("../api/google-sheet.instance.js");
 const axios = require("axios");
 
 const jwt = require("jsonwebtoken");

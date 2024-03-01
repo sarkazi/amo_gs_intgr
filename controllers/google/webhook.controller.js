@@ -1,4 +1,4 @@
-const { updateLead } = require("#services/amo.service.js");
+const { updateLead } = require("../../services/amo.service.js");
 
 const defineTargetFields = (body) => {
   return Object.entries(body).reduce((acc, [key, value]) => {

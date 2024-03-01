@@ -1,4 +1,4 @@
-const webhookController = require("#controllers/google/webhook.controller.js");
+const webhookController = require("../controllers/google/webhook.controller.js");
 const express = require("express");
 const router = express.Router();
 
