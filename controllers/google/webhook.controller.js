@@ -17,8 +17,6 @@ module.exports = async (req, res, next) => {
   try {
     const body = req.body;
 
-    console.log(body, "fdusjf");
-
     const { leadId, budget } = defineTargetFields(body);
 
     const payload = {

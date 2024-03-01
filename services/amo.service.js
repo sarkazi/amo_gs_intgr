@@ -13,7 +13,21 @@ const updateLead = async (leadId, payload) => {
 };
 
 const getLead = async (leadId) => {
-  const { data } = await amoInstance.get(`/leads/${leadId}`);
+  const { data } = await amoInstance.get(`/leads/${leadId}`, {
+    params: {
+      with: "contacts",
+    },
+  });
+
+  return data;
+};
+
+const getContact = async (contactId) => {
+  const { data } = await amoInstance.get(`/contacts/${contactId}`, {
+    params: {
+      with: "custom_fields_values",
+    },
+  });
 
   return data;
 };
@@ -38,4 +52,5 @@ module.exports = {
   updateLead,
   getLead,
   getContactsByLead,
+  getContact,
 };
