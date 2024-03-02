@@ -1,5 +1,7 @@
-module.exports = (app) => {
-  app.use(async (err, req, res, next) => {
+import { Request, Express, Response, NextFunction } from "express";
+
+const errorHandler = (app: Express) => {
+  app.use(async (err: any, req: Request, res: Response, next: NextFunction) => {
     console.log(err, "err");
 
     const defineStatusCode = () => {
@@ -75,3 +77,5 @@ module.exports = (app) => {
     }
   });
 };
+
+export default errorHandler;

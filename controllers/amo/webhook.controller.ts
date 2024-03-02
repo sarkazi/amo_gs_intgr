@@ -1,23 +1,43 @@
-const amoService = require("../../services/amo.service");
-const googleSheetsService = require("../../services/google-sheets.service.js");
-const {
-  getGoogleAccessToken,
-} = require("../../services/google-sheets.service.js");
-const moment = require("moment");
-const recordedLeads = require("../../state/recordedLeads.js");
+import googleSheetsService from "../../services/google-sheets.service";
+import amoService from "../../services/amo.service";
 
-const contactCustomFieldEnum = {
-  PHONE: "PHONE",
-};
+import recordedLeads from "../../state/recordedLeads";
+import moment from "moment";
 
-const onDefineRange = (sheetData) => {
+import { Response, Request, NextFunction } from "express";
+import { ContactValue, IGetSheetResponse } from "../../services/types";
+
+interface IDefineContactDataResponse {
+  contact: {
+    name?: string;
+    phone?: string;
+  };
+}
+
+enum contactCustomFieldEnum {
+  PHONE = "PHONE",
+}
+
+interface IWebhookData {
+  leads: {
+    add?: {
+      id: string;
+      responsible_user_id: string;
+      created_at: string;
+    }[];
+  };
+}
+
+const onDefineRange = (sheetData: IGetSheetResponse) => {
   const nextEmptyRow = sheetData.hasOwnProperty("values")
     ? sheetData.values.length + 1
     : 1;
   return `!A${nextEmptyRow}`;
 };
 
-const onDefineContactData = async (leadContacts) => {
+const onDefineContactData = async (
+  leadContacts: ContactValue[]
+): Promise<IDefineContactDataResponse> => {
   const leadHasContact = leadContacts.length;
 
   if (!leadHasContact) {
@@ -46,15 +66,22 @@ const onDefineContactData = async (leadContacts) => {
   };
 };
 
-module.exports = async (req, res, next) => {
+const amoWebhookController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    const body = req.body;
+    const body: IWebhookData = req.body;
 
     const isNoticeOfAddingDeal =
       body.hasOwnProperty("leads") && body.leads.hasOwnProperty("add");
 
-    if (isNoticeOfAddingDeal && !recordedLeads.includes(body.leads.add[0].id)) {
-      const dealInfo = body.leads.add[0];
+    if (
+      isNoticeOfAddingDeal &&
+      !recordedLeads.includes(body.leads.add![0].id)
+    ) {
+      const dealInfo = body.leads.add![0];
 
       const responsibleUserData = await amoService.getUser(
         dealInfo.responsible_user_id
@@ -68,13 +95,14 @@ module.exports = async (req, res, next) => {
       );
       //
 
-      const googleAccessToken = await getGoogleAccessToken();
+      const googleAccessToken =
+        await googleSheetsService.getGoogleAccessToken();
 
       const newSheetRecordData = [
         dealInfo.id,
         moment(+dealInfo.created_at * 1000).format("D MMM YYYY, HH:mm"),
-        contact.hasOwnProperty("phone") ? contact.phone : "-",
-        contact.hasOwnProperty("name") ? contact.name : "-",
+        contact.hasOwnProperty("phone") ? contact.phone! : "-",
+        contact.hasOwnProperty("name") ? contact.name! : "-",
         responsibleUserData.name,
         responsibleUserData.id,
       ];
@@ -101,3 +129,5 @@ module.exports = async (req, res, next) => {
     next(err);
   }
 };
+
+export default amoWebhookController;
