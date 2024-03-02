@@ -1,9 +1,11 @@
-const axios = require("axios");
+import axios from "axios";
 
-module.exports = axios.create({
+const googleSheetsApiInstance = axios.create({
   baseURL: "https://sheets.googleapis.com/v4/spreadsheets",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
   },
 });
+
+export default googleSheetsApiInstance;

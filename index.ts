@@ -1,8 +1,11 @@
-const express = require("express");
-require("dotenv").config();
+import express from "express";
 
-const expressApp = require("./utils/express-app");
-const errorHandler = require("./utils/error-handler");
+import { config } from "dotenv";
+
+config();
+
+import expressApp from "./utils/express-app";
+import errorHandler from "./utils/error-handler";
 
 let PORT = process.env.PORT || 3400;
 
@@ -21,9 +24,6 @@ const StartServer = async () => {
       .on("error", (err) => {
         console.log(err);
         process.exit();
-      })
-      .on("close", () => {
-        channel.close();
       });
   } catch (error) {
     console.log(error, "error");

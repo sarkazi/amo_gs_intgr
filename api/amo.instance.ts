@@ -1,6 +1,6 @@
-const axios = require("axios");
+import axios from "axios";
 
-module.exports = axios.create({
+const amoApiInstance = axios.create({
   baseURL: "https://kolenjii.amocrm.ru/api/v4",
   timeout: 10000,
   headers: {
@@ -8,3 +8,5 @@ module.exports = axios.create({
     Authorization: `Bearer ${process.env.AMO_TOKEN}`,
   },
 });
+
+export default amoApiInstance;
