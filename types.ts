@@ -6,7 +6,6 @@ interface ISheetColumnTitle {
   "Имя контакта": string;
   "Ответственный за сделку": string;
   "ID ответственного за сделку": string;
-  row: number;
 }
 
 export { ISheetColumnTitle };
